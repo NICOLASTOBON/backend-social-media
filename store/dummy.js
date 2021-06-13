@@ -13,13 +13,13 @@ const db = {
   ]
 }
 
-const list = async (table) => {
+async function list(table) {
   const data = db[table]
   if (!data) throw data
   return data
 }
 
-const get = async (table, id) => {
+async function get(table, id) {
   const collection = await list(table)
   const data = collection.find((user) => user.id === id)
 
@@ -27,12 +27,18 @@ const get = async (table, id) => {
   return data
 }
 
-const insert = async (table, data) => {
+function insert(table, data) {
+  if (!db[table]) {
+    db[table] = []
+  }
+
   db[table].push(data)
+
+  console.log(db);
   return data
 }
 
-const remove = async (table, id) => {
+async function remove(table, id) {
   const collection = await list(table)
   const data = collection.filter((user) => user.id !== id)
   db[table] = data
@@ -41,9 +47,17 @@ const remove = async (table, id) => {
   return "success"
 }
 
+async function query(table, data) {
+  const collection = await list(table)
+  const key = Object.keys(data)[0];
+
+  return collection.find((user) => user[key] === data[key])
+}
+
 module.exports = {
   list,
   get,
   insert,
   remove,
+  query,
 }

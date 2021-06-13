@@ -5,8 +5,6 @@ const Controller = require('./index')
 
 const router = express.Router();
 
-router.use(express.json())
-
 // form #1 to handle promise (async / await)
 router.get('/', async (req, res) => {
   try {
