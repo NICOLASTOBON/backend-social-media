@@ -1,3 +1,6 @@
+const { nanoid } = require('nanoid')
+const AuthController  = require('../auth/index');
+
 const TABLE = 'users'
 
 class UserController {
@@ -15,10 +18,17 @@ class UserController {
     return this.#store.get(TABLE, id)
   }
 
-  insert({ id, name, username }) {
-    if (!id || !name ||!username) throw ('Inavlid data')
+  async insert({ id, name, username, password }) {
+    if (!name ||!username || !password) throw ('Inavlid data')
     
-    const user = { id, name, username }
+    const user = {
+      id: id ? id : nanoid(),
+      name,
+      username,
+    }
+
+    await AuthController.insert({ id: user.id, username, password })
+
     return this.#store.insert(TABLE, user)
   }
 
