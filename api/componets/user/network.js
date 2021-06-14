@@ -5,17 +5,23 @@ const Controller = require('./index')
 
 const router = express.Router();
 
+router.get('/', list)
+router.get('/:id', get)
+router.post('/', insert)
+router.put('/', insert)
+router.delete('/:id', remove)
+
 // form #1 to handle promise (async / await)
-router.get('/', async (req, res) => {
+async function list(req, res) {
   try {
     const listUser = await Controller.list()
     response.success(req, res, listUser, 200)
   } catch (err) {
     response.error(req, res, err, 500)
   }
-})
+}
 
-router.get('/:id', async (req, res) => {
+async function get(req, res) {
   try {
     const id = parseInt(req.params.id)
     const listUser = await Controller.get(id)
@@ -23,18 +29,18 @@ router.get('/:id', async (req, res) => {
   } catch (err) {
     response.error(req, res, err, 404)
   }
-})
+}
 
-router.post('/', async (req, res) => {
+async function insert(req, res) {
   try {
     const newUser = await Controller.insert(req.body)
     response.success(req, res, newUser, 200)
   } catch (err) {
     response.error(req, res, err, 404)
   }
-})
+}
 
-router.delete('/:id', async (req, res) => {
+async function remove(req, res) {
   try {
     const id = parseInt(req.params.id)
     const userRemoved = await Controller.remove(id)
@@ -42,6 +48,6 @@ router.delete('/:id', async (req, res) => {
   } catch (err) {
     response.error(req, res, err, 404)
   }
-})
+}
 
 module.exports = router;

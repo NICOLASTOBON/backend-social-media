@@ -1,4 +1,6 @@
 const { nanoid } = require('nanoid')
+const bcrypt = require('bcrypt');
+
 const AuthController  = require('../auth/index');
 
 const TABLE = 'users'
@@ -27,7 +29,11 @@ class UserController {
       username,
     }
 
-    await AuthController.insert({ id: user.id, username, password })
+    await AuthController.insert({
+      id: user.id,
+      username,
+      password: await bcrypt.hash(password, 5)
+    })
 
     return this.#store.insert(TABLE, user)
   }

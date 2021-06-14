@@ -1,4 +1,5 @@
-const JWT = require('../../../auth/index')
+const bcrypt = require('bcrypt');
+const Auth = require('../../../auth/index')
 
 const TABLE = 'auth';
 
@@ -13,8 +14,10 @@ class AuthController {
     if (!username, !password) throw 'Invalid Data';
 
     const data = await this.#store.query(TABLE, { username })
-    if (data.password === password) {
-      return JWT.sign(data);
+    const pass = await bcrypt.compare(password, data.password)
+
+    if (pass) {
+      return Auth.sign(data);
     } else {
       throw 'Invalid Data';
     }
