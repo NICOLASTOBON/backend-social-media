@@ -34,7 +34,6 @@ function insert(table, data) {
 
   db[table].push(data)
 
-  console.log(db);
   return data
 }
 

@@ -1,5 +1,7 @@
 const express = require('express');
 
+const secure = require('./secure')
+
 const response = require('../../../network/response');
 const Controller = require('./index')
 
@@ -8,7 +10,7 @@ const router = express.Router();
 router.get('/', list)
 router.get('/:id', get)
 router.post('/', insert)
-router.put('/', insert)
+router.put('/', secure('update'), insert)
 router.delete('/:id', remove)
 
 // form #1 to handle promise (async / await)

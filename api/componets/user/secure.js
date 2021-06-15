@@ -1,12 +1,9 @@
 const Auth = require('../../../auth/index');
 
-class CheckAuth {
-  constructor(action) {
-    this.action = action;
-  }
+module.exports = function check(action) {
 
-  middleware(req, res, next) {
-    switch(this.action) {
+  function middleware(req, res, next) {
+    switch(action) {
       case 'update':
         const owner = req.body.id
         Auth.checkOwn(req, owner)
@@ -15,4 +12,7 @@ class CheckAuth {
         next();
     }
   }
+
+  return middleware
+
 }
